@@ -1,0 +1,30 @@
+{
+  "name": "ark_2020_server",
+  "version": "1.0.0",
+  "description": "source code for server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkovalevych/ark_2020_server.git"
+  },
+  "keywords": [
+    "node",
+    "server",
+    "BeeHiveBit"
+  ],
+  "author": "Bohdan Kovalevych",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bkovalevych/ark_2020_server/issues"
+  },
+  "homepage": "https://github.com/bkovalevych/ark_2020_server#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongodb": "^3.5.6",
+    "mongoose": "^5.9.9"
+  }
+}
