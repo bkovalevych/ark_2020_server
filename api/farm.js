@@ -1,26 +1,40 @@
 const router = require('express').Router();
 const farmManagement = require('../businessLayer/user/farmManagement');
 const userDefiner = require('../crossFunction/userDefiner')
-const query = require('../crossFunction/query')
-router.route('').get([
-    userDefiner,
-    (req, res, next) => {
-      req.collection = farmManagement;
-      next()
-    },
-    query
-    ]
-).post([
-    userDefiner,
-    farmManagement.addFarm
-    ]
-);
+const query = require('../crossFunction/query');
+const Farm = require('../models/Farm');
+
+const setCollection = (req, res, next) => {
+    req.collection = Farm;
+    next()
+};
+
+router.route('')
+    .get([userDefiner, setCollection, query])
+    .post(
+        userDefiner,
+        setCollection,
+        farmManagement.addOperation
+    );
 
 router.route('/:id')
-    .get([userDefiner, farmManagement.getById], (req, res) => {
-        res.json(req.farm)
-    })
-    .put([userDefiner, farmManagement.changeFarm])
-    .delete([userDefiner, farmManagement.deleteFarm]);
+    .get(
+        userDefiner,
+        setCollection,
+        farmManagement.getById,
+        (req, res) => {
+            res.json(req.findObject)
+        })
+    .put(
+        userDefiner,
+        setCollection,
+        farmManagement.getById,
+        farmManagement.changeOperation
+    )
+    .delete(
+        userDefiner,
+        setCollection,
+        farmManagement.deleteOperation
+    );
 
 module.exports = router;

@@ -1,6 +1,4 @@
-const Farm = require('../../models/farm');
-
-const addFarm = (req, res) => {
+const addOperation = (req, res) => {
     if (req.body.addObject == null) {
         res.status(400).json({errors: "Object is required"})
     }
@@ -8,30 +6,30 @@ const addFarm = (req, res) => {
         {idUser: req.user._id.toString()},
         req.body.addObject
         );
-    Farm.create(obj).then(farm => {
-        res.json(farm);
+    req.collection.create(obj).then(created => {
+        res.json(created);
     }).catch(err => {
         res.status(400).json(err)
     })
 };
 
 const getById = (req, res, next) => {
-    let idFarm = req.params['id'];
-    if (idFarm == null) {
-        res.status(400).json({errors: 'IdFarm is not defined'})
+    let idObject = req.params['id'];
+    if (idObject == null) {
+        res.status(400).json({errors: 'Id is not defined'})
     }
-    Farm.findOne({_id: idFarm}).then(farm => {
-        if (farm.idUser.toString() !== req.user._id.toString()) {
-            res.status(400).json({errors: 'That is not your farm'});
+    req.collection.findOne({_id: idObject}).then(findObject => {
+        if (findObject == null) {
+            res.status(400).json({errors: 'Not found'});
         } else
-            req.farm = farm;
+            req.findObject = findObject;
             next()
     })
 };
 
 
-const changeFarm = (req, res) => {
-    let farm = req.farm;
+const changeOperation = (req, res) => {
+    let findObject = req.findObject;
     let changed = req.body.putObject;
     if (changed == null) {
         res.status(400).json({errors: 'putObject is not defined'})
@@ -39,19 +37,19 @@ const changeFarm = (req, res) => {
         delete changed._id;
         delete changed.idUser;
         delete changed.registered;
-        Object.assign(farm, changed);
-        farm.save();
+        Object.assign(findObject, changed);
+        findObject.save();
         res.json({data: 'Object changed'});
     }
 };
 
-const deleteFarm = (req, res) => {
+const deleteOperation = (req, res) => {
     let delObjects = req.body.deleteObjects;
-    Farm.deleteMany({_id: {$in: delObjects}, idUser: req.user._id.toString()}).then(result => {
+    req.collection.deleteMany({_id: {$in: delObjects}, idUser: req.user._id.toString()}).then(result => {
         res.json(result)
     }).catch(err => {
         res.status(500).json(err)
     })
 };
 
-module.exports = {addFarm: addFarm, getById: getById, changeFarm: changeFarm, deleteFarm: deleteFarm};
+module.exports = {addOperation: addOperation, getById: getById, changeOperation: changeOperation, deleteOperation: deleteOperation};
