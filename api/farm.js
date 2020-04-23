@@ -6,6 +6,7 @@ const Farm = require('../models/Farm');
 
 const setCollection = (req, res, next) => {
     req.collection = Farm;
+    req.collectionName = 'Farm';
     next()
 };
 

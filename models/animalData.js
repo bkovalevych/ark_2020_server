@@ -7,6 +7,7 @@ const AnimalDataSchema = new Schema({
     idCage: {type: Schema.Types.ObjectId, ref: "Cage"},
     activity: {type: Schema.Types.Mixed},
     temperature: Schema.Types.Decimal,
+    humidity: Schema.Types.Decimal
 });
 
 module.exports = AnimalData = mongoose.model('AnimalData', AnimalDataSchema);

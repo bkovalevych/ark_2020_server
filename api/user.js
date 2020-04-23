@@ -1,8 +1,10 @@
 const user = require('express').Router();
 const addLog = require('../crossFunction/addLog');
-user.post('/registered', (req, res) => {
+const userManagement = require('../businessLayer/user/userManagement')
+
+user.post('/registered', userManagement.addUser, (req, res) => {
     let login = req.body.login;
-    addLog(`user with login ${login} registered`, 'register')
+    addLog(`user with login ${login} registered`, 'register');
     res.status(200).send('ok');
 });
 

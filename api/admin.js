@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Logs = require('../models/logs');
 const query = require('../crossFunction/query');
+const Feedback = require('../models/feedback');
 
 router.get(
     '/logs',
@@ -11,8 +12,13 @@ router.get(
     query
 );
 
-router.post('/login', (req, res) => {
-
-});
+router
+    .get('/feedback',
+        (req, res, next) => {
+            req.collection = Feedback;
+            next();
+        },
+        query
+    );
 
 module.exports = router;

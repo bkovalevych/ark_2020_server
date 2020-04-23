@@ -7,12 +7,7 @@ const CommonInfoSchema = new Schema({
     numberUsers: Schema.Types.Number,
     numberCages: Schema.Types.Number,
     numberFarms: Schema.Types.Number,
-    numberControllers: Schema.Types.Number,
-    feedback: [{
-        timestamp: {type: Date, default: Date.now},
-        message: String,
-        login: String
-    }]
+    numberControllers: Schema.Types.Number
 });
 
 module.exports = CommonInfo = mongoose.model('CommonInfo', CommonInfoSchema);

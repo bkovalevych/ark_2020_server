@@ -8,7 +8,7 @@ const IotControllerSchema = new Schema({
     idFarm: {type: Schema.Types.ObjectId, ref: "Farm"},
     idUser: {type: Schema.Types.ObjectId, ref: "User"},
     idCage: {type: Schema.Types.ObjectId, ref: "Cage"},
-    specification: Schema.Types.Mixed,
+    specification: String,
     sessionKey: String,
     foodSchedule: [{type: Schema.Types.Object, ref: "Food"}]
 });

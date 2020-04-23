@@ -6,6 +6,7 @@ const Cage = require('../models/Cage');
 
 const setCollection = (req, res, next) => {
     req.collection = Cage;
+    req.collectionName = 'Cage';
     next()
 };
 
