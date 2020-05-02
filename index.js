@@ -2,7 +2,6 @@ const server = require('express')();
 const dotenv = require('dotenv');
 dotenv.config();
 const port = parseInt(process.env.PORT);
-const host = process.env.HOST;
 const cors = require("cors");
 const bodyParser = require('body-parser');
 
@@ -18,6 +17,6 @@ server.use('/admin', require('./api/admin'));
 server.use('/data', require('./api/data'));
 server.use('/iot', require('./api/iot'));
 
-server.listen(port, host, () => {
-   console.log(`Server listen on ${host}:${port}`)
+server.listen(port, () => {
+   console.log(`Server listen on ${port}`)
 });
