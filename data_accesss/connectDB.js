@@ -3,7 +3,7 @@ const uri = process.env.DB_URI;
 mongoose
     .connect(
         uri,
-        { useNewUrlParser: true}
+        { useUnifiedTopology: true, useNewUrlParser: true}
     )
     .then(() => console.log('MongoDB Connected'))
     .catch(err => console.log(err));

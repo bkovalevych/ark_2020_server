@@ -6,7 +6,7 @@ const cors = require("cors");
 const bodyParser = require('body-parser');
 
 server.use(cors());
-server.use(bodyParser.urlencoded());
+server.use(bodyParser.urlencoded({extended: false}));
 server.use(bodyParser.json());
 require('./data_accesss/connectDB');
 server.use('/farm', require('./api/farm'));
