@@ -1,6 +1,6 @@
 const user = require('express').Router();
 const addLog = require('../crossFunction/addLog');
-const userManagement = require('../businessLayer/user/userManagement')
+const userManagement = require('../businessLayer/user/userManagement');
 
 user.post('/registered', userManagement.addUser, (req, res) => {
     let login = req.body.login;

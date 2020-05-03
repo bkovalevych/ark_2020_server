@@ -2,7 +2,7 @@ const router = require('express').Router();
 const iotManagement = require('../businessLayer/user/iotManagement');
 const userDefiner = require('../crossFunction/userDefiner');
 const IotController = require('../models/iotController');
-const query = require('../crossFunction/query')
+const query = require('../crossFunction/query');
 router.route('')
     .post(
         userDefiner,

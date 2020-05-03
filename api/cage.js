@@ -2,7 +2,7 @@ const router = require('express').Router();
 const farmManagement = require('../businessLayer/user/farmManagement');
 const userDefiner = require('../crossFunction/userDefiner')
 const query = require('../crossFunction/query');
-const Cage = require('../models/Cage');
+const Cage = require('../models/cage');
 
 const setCollection = (req, res, next) => {
     req.collection = Cage;

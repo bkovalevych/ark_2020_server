@@ -4,4 +4,4 @@ let objectModule = {};
 
 
 
-module.exports = objectModule
+module.exports = objectModule;
