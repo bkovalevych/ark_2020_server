@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const farmManagement = require('../businessLayer/user/farmManagement');
-const userDefiner = require('../crossFunction/userDefiner')
+const userDefiner = require('../crossFunction/userDefiner');
 const query = require('../crossFunction/query');
-const Farm = require('../models/Farm');
+const Farm = require('../models/farm');
 
 const setCollection = (req, res, next) => {
     req.collection = Farm;
