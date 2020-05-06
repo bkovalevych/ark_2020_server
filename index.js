@@ -4,8 +4,10 @@ dotenv.config();
 const port = parseInt(process.env.PORT || 5000);
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const middleCookies = require('universal-cookie-express')
 
 server.use(cors());
+server.use(middleCookies())
 server.use(bodyParser.urlencoded({extended: false}));
 server.use(bodyParser.json());
 require('./data_accesss/connectDB');

@@ -6,12 +6,13 @@ const Farm = require('../models/farm');
 
 const setCollection = (req, res, next) => {
     req.collection = Farm;
+    req.projection = '_id idUser location animalKind name'
     req.collectionName = 'Farm';
     next()
 };
 
-router.route('')
-    .get([userDefiner, setCollection, query])
+router.route('/')
+    .get(userDefiner, setCollection, query)
     .post(
         userDefiner,
         setCollection,
