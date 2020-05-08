@@ -21,9 +21,9 @@ objectModule.addUser = (req, res, next) => {
         }
         return user;
     }).then(finalUser => {
-        req.user = finalUser;
+
         addLog(`user ${finalUser.name} signed`)
-        next();
+        res.json(finalUser);
     }).catch(err => {
         addLog(err.toString(), 'create User');
         res.status(500).json({errors: err});
