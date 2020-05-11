@@ -23,15 +23,27 @@ objectModule.getNameIot = async (req, res) => {
   res.send(name);
 };
 
-objectModule.registerIot = (req, res) => {
-    let name = req.body.nameIot;
+objectModule.getById = (req, res, next) => {
+    IotController.findOne({name: req.params.id}).then(iot => {
+        if (iot == null) {
+            addLog('iot not found', 'iotDefiner');
+            res.status(4000).send('not found')
+        } else {
+            req.iot = iot;
+            next();
+        }
+    })
+};
+
+objectModule.addOperation = (req, res) => {
+    let name = req.body.name;
     let idUser = req.user._id.toString();
     IotNames.findOneAndDelete({_id: name})
         .then(nameInTable => {
             if (nameInTable == null) {
                 addLog(`Name ${name} is incorrect for user ${req.user.login}`, 'registerIot error');
                 res.status(400).json({errors: "Your name is incorrect or has expired."})
-            }
+            } else
             return IotController.create({
                 name: name,
                 idUser: idUser
@@ -46,61 +58,34 @@ objectModule.registerIot = (req, res) => {
         })
 };
 
-const addToTable = (req, res, iot) => {
-    let objectData = {
-        idCage: iot.idCage
-    };
-    switch (iot.specification) {
-        case 'cageData':
-            objectData.temperature = req.body.temperature;
-            objectData.humidity = req.body.humidity;
-            objectData.weight = req.body.weight;
-            CageData.create(objectData).exec();
-            break;
-        case 'animalData':
-            objectData.activity = req.body.activity;
-            objectData.temperature = req.body.temperature;
-            objectData.humidity = req.body.humidity;
-            AnimalData.create(objectData).exec();
-            break;
+
+objectModule.changeOperation = (req, res) => {
+    let findObject = req.iot;
+    let changed = req.body;
+    if (changed == null || Object.keys(changed).length === 0) {
+        addLog('body is empty', 'changeOperation');
+        res.status(400).json({errors: "body is empty"});
+    } else {
+        delete changed._id;
+        changed.idUser = req.user._id.toString()
+        Object.assign(findObject, changed);
+        findObject.save();
+        addLog('ok', `${req.collection.name} put`);
+        res.json({data: "Object changed"});
     }
-};
+}
 
-objectModule.handleData = (req, res) => {
-    let name = req.body.nameIot;
-    IotController.findOne({name: name})
-        .then(iot => {
-            if (iot == null) {
-                addLog(`iot ${name} not found`, 'handle data error');
-                res.status(400).send(`iot ${name} not found`);
-            } else {
-                addToTable(req, res, iot);
-                req.status(200).send('ok');
-            }
-        })
-};
+objectModule.deleteOperation = (req, res) => {
+    let delObjects = req.body;
+    req.collection.deleteMany({_id: {$in: delObjects}, idUser: req.user._id.toString()}).then(result => {
+        addLog('ok', `${req.collectionName} delete`);
+        res.json(result);
+    }).catch(err => {
+        addLog('error with db', `${req.collectionName} delete`);
+        res.status(500).json(err);
+    })
+}
 
-objectModule.setCageForIot = (req, res) => {
-    let idUser = req.user._id.toString();
-    let idCage = req.body.idCage;
-    let nameIot = req.body.nameIot;
 
-    IotController.findOne({name: nameIot, idUser: idUser})
-        .then(iot => {
-            if (iot == null) {
-                addLog(`Iot ${nameIot} not found`, 'setCageForIot error');
-                res.status(400).send(`Iot ${nameIot} not found`);
-            } else {
-                iot.idCage = idCage;
-                iot.save().exec();
-                addLog(`Iot ${nameIot} linked to ${idCage}`, 'setCageForIot');
-                res.send('ok');
-            }
-        })
-        .catch(err => {
-            addLog('error with db', 'setCageForIot error');
-            res.status(500).send('error with db');
-        })
-};
 
 module.exports = objectModule;

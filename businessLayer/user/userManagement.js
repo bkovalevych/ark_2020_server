@@ -22,7 +22,7 @@ objectModule.addUser = (req, res, next) => {
         return user;
     }).then(finalUser => {
 
-        addLog(`user ${finalUser.name} signed`)
+        addLog(`user ${finalUser.name} signed`, 'addUser')
         res.json(finalUser);
     }).catch(err => {
         addLog(err.toString(), 'create User');

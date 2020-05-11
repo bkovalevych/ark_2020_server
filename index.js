@@ -11,6 +11,10 @@ server.use(middleCookies())
 server.use(bodyParser.urlencoded({extended: false}));
 server.use(bodyParser.json());
 require('./data_accesss/connectDB');
+
+
+
+
 server.use('/farm', require('./api/farm'));
 server.use('/user', require('./api/user'));
 server.use('/cage', require('./api/cage'));

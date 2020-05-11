@@ -11,4 +11,4 @@ const CageSchema = new Schema({
     contains: Schema.Types.Number
 });
 
-module.exports = Farm = mongoose.model('Cage', CageSchema);
+module.exports = Cage = mongoose.model('Cage', CageSchema);

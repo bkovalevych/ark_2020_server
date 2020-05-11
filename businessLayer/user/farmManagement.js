@@ -37,7 +37,7 @@ const getById = (req, res, next) => {
 
 const changeOperation = (req, res) => {
     let findObject = req.findObject;
-    let changed = req.body.putObject;
+    let changed = req.body;
     if (changed == null) {
         addLog('putObject is not defined', `${req.collection.name} put error`);
         res.status(400).json({errors: 'putObject is not defined'})
@@ -53,7 +53,7 @@ const changeOperation = (req, res) => {
 };
 
 const deleteOperation = (req, res) => {
-    let delObjects = req.body.deleteObjects;
+    let delObjects = req.body;
     req.collection.deleteMany({_id: {$in: delObjects}, idUser: req.user._id.toString()}).then(result => {
         addLog('ok', `${req.collectionName} delete`);
         res.json(result)
