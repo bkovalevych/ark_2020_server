@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Create Schema
-const UserSchema = new Schema({
+const adminSchema = new Schema({
     registered: {type: Date, default: Date.now},
     name: String,
     googleId: {type: String,
-        required: [true, 'Your googleId can not be blank'],
         unique: [true, 'This id is already exists']},
     picture: String,
     login: {
@@ -15,13 +13,6 @@ const UserSchema = new Schema({
         unique: [true, 'User is already exists']
     },
     locale: String,
-    language: String,
-    publicKey: String,
-    sockets: [String],
-    notifications: [{
-        text: String,
-        time: {type: Date, default: Date.now}
-    }]
-});
+})
 
-module.exports = User = mongoose.model('User', UserSchema);
+module.exports = Admin = mongoose.model('Admin', adminSchema)

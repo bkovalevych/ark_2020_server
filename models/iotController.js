@@ -9,7 +9,8 @@ const IotControllerSchema = new Schema({
     idUser: {type: Schema.Types.ObjectId, ref: "User"},
     idCage: {type: Schema.Types.ObjectId, ref: "Cage"},
     specification: String,
-    sessionKey: String,
+    confirmed: {type: Schema.Types.Bool, default: false},
+    idSocket: String,
     foodSchedule: [{type: Schema.Types.Object, ref: "Food"}]
 });
 module.exports = IotController = mongoose.model('iotController', IotControllerSchema);
