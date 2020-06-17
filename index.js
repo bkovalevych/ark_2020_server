@@ -55,8 +55,7 @@ const processData = (type, payload, client) => {
 }
 
 server.use(cors(
-//    origin: 'http://localhost:3000',
-//    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+     // some legacy browsers (IE11, various SmartTVs) choke on 204
  ));
 
 
@@ -87,17 +86,42 @@ io.on('connection', client => {
             })
             .then(user => {
                 if (user && user.sockets) {
-                    user.sockets.map(id_socket => {
-                        all_sockets[id_socket].emit("iotOnline", controller)
+                    let indexes = []
+                    user.sockets.map((id_socket, index) => {
+                        if (all_sockets[id_socket]) {
+                            all_sockets[id_socket].emit("iotOnline", controller)
+                        } else {
+                            indexes.push(index)
+                        }
                     })
+                    for (let key = indexes.length; key >= 0; --key) {
+                        user.sockets.splice(indexes[key], 1);
+                    }
+                    user.save();
                 }
             })
     })
-    client.on('setValue', data => {
-        let idIotSocket = data['socketIot'];
-        delete data['socketIot'];
-        if (all_sockets[idIotSocket])
-             all_sockets[idIotSocket].emit("setValue", data)
+    client.on('remote', remoteData => {
+        let id = remoteData._id;
+        let humidity = remoteData.humidity;
+        let temperature = remoteData.temperature;
+        delete remoteData.temperature;
+        delete remoteData.humidity;
+        delete remoteData["_id"];
+
+        if (all_sockets[remoteData["idSocket"]]) {
+            Object.keys(remoteData).map(name =>
+                all_sockets[remoteData["idSocket"]].emit('setValue', {"name": name, "value": remoteData[name]})
+            )
+            if (humidity) {
+                all_sockets[remoteData["idSocket"]].emit('remote', {"temperature": temperature, "humidity": humidity })
+            }
+        }
+        IotController.findOne({_id: id}).then(iotResult => {
+
+            Object.assign(iotResult, remoteData)
+            iotResult.save()
+        }).catch(err => console.log(err.toString()))
     })
     client.on("configUser", userData => {
         User.findOne({_id: userData.idUser}).then(user => {

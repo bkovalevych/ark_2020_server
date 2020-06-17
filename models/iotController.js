@@ -11,6 +11,6 @@ const IotControllerSchema = new Schema({
     specification: String,
     confirmed: {type: Schema.Types.Bool, default: false},
     idSocket: String,
-    foodSchedule: [{type: Schema.Types.Object, ref: "Food"}]
+    foodSchedule: Schema.Types.Mixed
 });
 module.exports = IotController = mongoose.model('iotController', IotControllerSchema);
