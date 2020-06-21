@@ -28,7 +28,7 @@ const setCollection = (req, res, next) => {
 
 
 router.route('/')
-    .get([userDefiner, setCollection, query])
+    .get([setCollection, query])
     .post(
         iotDefiner,
         dataManagement.addOperation

@@ -3,12 +3,16 @@ const verify = require('./verify');
 const addLog = require('./addLog')
 
 module.exports = (req, res, next) => {
-    if (!req.universalCookies.cookies['token']) {
+    let tok = req.headers.cookie;
+    if (!tok) {
+        tok = req.universalCookies.cookies['token']
+    }
+    if (!tok) {
         addLog('token not defined', 'userDefiner')
         res.status(400).json({errors: "Token not defined."});
         return;
     }
-    verify(req.universalCookies.cookies['token']).then(userData => {
+    verify(tok).then(userData => {
         if (!userData) {
             res.status(400).json({errors: "User not defined."});
         } else {

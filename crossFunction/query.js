@@ -68,7 +68,6 @@ module.exports = (req, res) => {
 
     options.skip = parseInt(options.skip.toString());
     options.limit = parseInt(options.limit.toString());
-
     collection.find(filter, null , options).then(result => {
         //res.header("Access-Control-Allow-Credentials", true)
         //res.header("Access-Control-Allow-Origin", "https://bee-hive-bit-server.herokuapp.com")
