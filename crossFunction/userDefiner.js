@@ -3,9 +3,9 @@ const verify = require('./verify');
 const addLog = require('./addLog')
 
 module.exports = (req, res, next) => {
-    let tok = req.headers.cookie;
+    let tok = req.universalCookies.cookies['token'];
     if (!tok) {
-        tok = req.universalCookies.cookies['token']
+        tok = req.headers.cookie
     }
     if (!tok) {
         addLog('token not defined', 'userDefiner')

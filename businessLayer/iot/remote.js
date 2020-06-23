@@ -4,15 +4,17 @@ module.exports = function(remoteData, all_sockets) {
     let id = remoteData._id;
     let humidity = remoteData.humidity;
     let temperature = remoteData.temperature;
+    let idSocket = remoteData.idSocket;
     delete remoteData.temperature;
     delete remoteData.humidity;
+    delete remoteData.idSocket;
     delete remoteData["_id"];
-    if (all_sockets[remoteData["idSocket"]]) {
+    if (all_sockets[idSocket]) {
         Object.keys(remoteData).map(name =>
-            all_sockets[remoteData["idSocket"]].emit('setValue', {"name": name, "value": remoteData[name]})
+            all_sockets[idSocket].emit('setValue', {"name": name, "value": remoteData[name]})
         )
         if (humidity) {
-            all_sockets[remoteData["idSocket"]].emit('remote', {"temperature": temperature, "humidity": humidity })
+            all_sockets[idSocket].emit('remote', {"temperature": parseFloat(temperature), "humidity": parseFloat(humidity) })
         }
     }
     IotController.findOne({_id: id}).then(iotResult => {

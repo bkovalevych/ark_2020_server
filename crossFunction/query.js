@@ -71,6 +71,22 @@ module.exports = (req, res) => {
     collection.find(filter, null , options).then(result => {
         //res.header("Access-Control-Allow-Credentials", true)
         //res.header("Access-Control-Allow-Origin", "https://bee-hive-bit-server.herokuapp.com")
+        if (result && req.collectionName === "IotController") {
+            let anotherResult = [];
+            for(let k in result) {
+                anotherResult.push(Object.assign({}, result[k]._doc))
+                if (anotherResult[k].activity) {
+                    anotherResult[k].activity = anotherResult[k].activity.toString();
+                    anotherResult[k].humidity = anotherResult[k].humidity.toString();
+                    anotherResult[k].temperature = anotherResult[k].temperature.toString();
+                } else if (anotherResult[k].weight) {
+                    anotherResult[k].humidity = anotherResult[k].humidity.toString();
+                    anotherResult[k].weight = anotherResult[k].weight.toString();
+                    anotherResult[k].temperature = anotherResult[k].temperature.toString();
+                }
+            }
+            res.json(anotherResult);
+        } else
         res.json(result)
     }).catch(err => {
         res.status(500).json(err)
